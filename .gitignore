@@ -28,3 +28,5 @@ tests/*
 *.ini
 *.log
 
+#claude files
+.claude/*
