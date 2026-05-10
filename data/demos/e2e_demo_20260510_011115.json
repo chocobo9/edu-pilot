@@ -1,0 +1,139 @@
+{
+  "session_1": [
+    {
+      "turn": 1,
+      "tool_calls": [],
+      "route": "intake"
+    },
+    {
+      "turn": 2,
+      "tool_calls": [
+        {
+          "name": "update_user_profile",
+          "arguments": {
+            "field": "gpa",
+            "value": "3.5"
+          },
+          "result": "Updated gpa = 3.5"
+        },
+        {
+          "name": "update_user_profile",
+          "arguments": {
+            "field": "language_scores",
+            "value": "IELTS 7.0"
+          },
+          "result": "Updated language_scores = IELTS 7.0"
+        },
+        {
+          "name": "update_user_profile",
+          "arguments": {
+            "field": "nationality",
+            "value": "Chinese"
+          },
+          "result": "Updated nationality = Chinese"
+        },
+        {
+          "name": "update_user_profile",
+          "arguments": {
+            "field": "target_programs",
+            "value": "Big Data master's"
+          },
+          "result": "Updated target_programs = Big Data master's"
+        },
+        {
+          "name": "update_user_profile",
+          "arguments": {
+            "field": "target_intake",
+            "value": "2027"
+          },
+          "result": "Updated target_intake = 2027"
+        }
+      ],
+      "route": "intake"
+    },
+    {
+      "turn": 3,
+      "tool_calls": [],
+      "route": "intake"
+    }
+  ],
+  "session_2": [
+    {
+      "turn": 1,
+      "tool_calls": [],
+      "route": "intake"
+    },
+    {
+      "turn": 2,
+      "tool_calls": [
+        {
+          "name": "update_user_profile",
+          "arguments": {
+            "field": "gpa",
+            "value": "3.7"
+          },
+          "result": "Updated gpa = 3.7"
+        }
+      ],
+      "route": "intake"
+    }
+  ],
+  "checks": [
+    {
+      "check": "Profile gpa=3.5 after turn 2",
+      "status": "OK"
+    },
+    {
+      "check": "Profile nationality=Chinese",
+      "status": "OK"
+    },
+    {
+      "check": "Route shifted to visa_advisory",
+      "status": "FAIL"
+    },
+    {
+      "check": "check_visa_eligibility called",
+      "status": "FAIL"
+    },
+    {
+      "check": "Profile in SQLite",
+      "status": "OK"
+    },
+    {
+      "check": "SQLite has gpa",
+      "status": "OK"
+    },
+    {
+      "check": "SQLite has nationality",
+      "status": "OK"
+    },
+    {
+      "check": "Summary in SQLite",
+      "status": "OK"
+    },
+    {
+      "check": "Checkpoint in SQLite",
+      "status": "OK"
+    },
+    {
+      "check": "Session 2 profile gpa=3.5",
+      "status": "OK"
+    },
+    {
+      "check": "Session 2 profile nationality=Chinese",
+      "status": "OK"
+    },
+    {
+      "check": "Agent NOT re-asking GPA",
+      "status": "OK"
+    },
+    {
+      "check": "update_user_profile with GPA 3.7",
+      "status": "OK"
+    },
+    {
+      "check": "SQLite gpa updated to 3.7",
+      "status": "OK"
+    }
+  ]
+}

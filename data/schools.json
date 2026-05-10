@@ -1,0 +1,149 @@
+[
+  {
+    "id": "sfu-bigdata-msc",
+    "university": "Simon Fraser University",
+    "program": "MSc in Big Data",
+    "country": "Canada",
+    "field": "data_science",
+    "gpa_requirement": 3.0,
+    "tuition_annual_cad": 9200,
+    "duration_months": 24,
+    "intake": ["Fall"]
+  },
+  {
+    "id": "ubc-cs-msc",
+    "university": "University of British Columbia",
+    "program": "MSc in Computer Science",
+    "country": "Canada",
+    "field": "computer_science",
+    "gpa_requirement": 3.3,
+    "tuition_annual_cad": 9000,
+    "duration_months": 24,
+    "intake": ["Fall", "Spring"]
+  },
+  {
+    "id": "uoft-cs-msc",
+    "university": "University of Toronto",
+    "program": "MSc in Computer Science",
+    "country": "Canada",
+    "field": "computer_science",
+    "gpa_requirement": 3.5,
+    "tuition_annual_cad": 23000,
+    "duration_months": 20,
+    "intake": ["Fall"]
+  },
+  {
+    "id": "waterloo-ai-mmath",
+    "university": "University of Waterloo",
+    "program": "MMath in Artificial Intelligence",
+    "country": "Canada",
+    "field": "artificial_intelligence",
+    "gpa_requirement": 3.5,
+    "tuition_annual_cad": 11000,
+    "duration_months": 24,
+    "intake": ["Fall", "Winter"]
+  },
+  {
+    "id": "mcgill-cs-msc",
+    "university": "McGill University",
+    "program": "MSc in Computer Science",
+    "country": "Canada",
+    "field": "computer_science",
+    "gpa_requirement": 3.3,
+    "tuition_annual_cad": 7600,
+    "duration_months": 24,
+    "intake": ["Fall", "Winter"]
+  },
+  {
+    "id": "columbia-cs-ms",
+    "university": "Columbia University",
+    "program": "MS in Computer Science",
+    "country": "United States",
+    "field": "computer_science",
+    "gpa_requirement": 3.5,
+    "tuition_annual_cad": 82000,
+    "duration_months": 18,
+    "intake": ["Fall"],
+    "tags": ["ivy_league"]
+  },
+  {
+    "id": "cornell-cs-ms",
+    "university": "Cornell University",
+    "program": "MS in Computer Science",
+    "country": "United States",
+    "field": "computer_science",
+    "gpa_requirement": 3.5,
+    "tuition_annual_cad": 78000,
+    "duration_months": 20,
+    "intake": ["Fall"],
+    "tags": ["ivy_league"]
+  },
+  {
+    "id": "upenn-cis-mse",
+    "university": "University of Pennsylvania",
+    "program": "MSE in Computer and Information Science",
+    "country": "United States",
+    "field": "computer_science",
+    "gpa_requirement": 3.5,
+    "tuition_annual_cad": 80000,
+    "duration_months": 20,
+    "intake": ["Fall"],
+    "tags": ["ivy_league"]
+  },
+  {
+    "id": "cmu-cs-ms",
+    "university": "Carnegie Mellon University",
+    "program": "MS in Computer Science",
+    "country": "United States",
+    "field": "computer_science",
+    "gpa_requirement": 3.5,
+    "tuition_annual_cad": 75000,
+    "duration_months": 24,
+    "intake": ["Fall"]
+  },
+  {
+    "id": "stanford-cs-ms",
+    "university": "Stanford University",
+    "program": "MS in Computer Science",
+    "country": "United States",
+    "field": "computer_science",
+    "gpa_requirement": 3.6,
+    "tuition_annual_cad": 85000,
+    "duration_months": 21,
+    "intake": ["Fall"]
+  },
+  {
+    "id": "mit-eecs-ms",
+    "university": "Massachusetts Institute of Technology",
+    "program": "MS in Electrical Engineering and Computer Science",
+    "country": "United States",
+    "field": "computer_science",
+    "gpa_requirement": 3.7,
+    "tuition_annual_cad": 80000,
+    "duration_months": 24,
+    "intake": ["Fall"]
+  },
+  {
+    "id": "columbia-ai-ms",
+    "university": "Columbia University",
+    "program": "MS in Computer Science - Machine Learning Track",
+    "country": "United States",
+    "field": "artificial_intelligence",
+    "gpa_requirement": 3.5,
+    "tuition_annual_cad": 82000,
+    "duration_months": 18,
+    "intake": ["Fall"],
+    "tags": ["ivy_league"]
+  },
+  {
+    "id": "cmu-ai-ms",
+    "university": "Carnegie Mellon University",
+    "program": "MS in Artificial Intelligence",
+    "country": "United States",
+    "field": "artificial_intelligence",
+    "gpa_requirement": 3.5,
+    "tuition_annual_cad": 75000,
+    "duration_months": 24,
+    "intake": ["Fall"]
+  }
+]

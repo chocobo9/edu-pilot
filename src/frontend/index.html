@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPilot</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-light.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app" class="app-wrapper">
+
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-icon">🎓</div>
+                <h2>EduPilot</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <button @click="handleNewChat" :class="['nav-btn', {active: activeNav === 'newChat'}]">
+                    <i class="fas fa-plus"></i> {{ t('newChat') }}
+                </button>
+                <button @click="handleHistory" :class="['nav-btn', {active: activeNav === 'history'}]">
+                    <i class="fas fa-history"></i> {{ t('history') }}
+                </button>
+                <button v-if="isAdmin" @click="handleSettings" :class="['nav-btn', {active: activeNav === 'settings'}]">
+                    <i class="fas fa-cog"></i> {{ t('settings') }}
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <button @click="handleClearChat" class="danger-btn">
+                    <i class="fas fa-trash-alt"></i> {{ t('clearChat') }}
+                </button>
+                <button @click="toggleLocale" class="locale-btn">
+                    🌐 {{ locale === 'en' ? '中文' : 'EN' }}
+                </button>
+                <div v-if="isAuthenticated" class="user-badge">
+                    <span>{{ currentUser.username }}</span>
+                    <small>{{ currentUser.role }}</small>
+                </div>
+                <button v-if="isAuthenticated" @click="handleLogout" class="danger-btn logout-btn">
+                    <i class="fas fa-right-from-bracket"></i> {{ t('logout') }}
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div v-if="!isAuthenticated" class="auth-panel">
+                <h2>{{ authMode === 'login' ? t('loginTitle') : t('registerTitle') }}</h2>
+                <p>{{ t('authDesc') }}</p>
+                <div class="auth-form">
+                    <input v-model="authForm.username" type="text" :placeholder="t('username')" />
+                    <input v-model="authForm.password" type="password" :placeholder="t('password')" />
+                    <select v-if="authMode === 'register'" v-model="authForm.role">
+                        <option value="user">{{ t('roleUser') }}</option>
+                        <option value="admin">{{ t('roleAdmin') }}</option>
+                    </select>
+                    <input v-if="authMode === 'register' && authForm.role === 'admin'" v-model="authForm.admin_code" type="password" :placeholder="t('adminCode')" />
+                    <button class="send-btn auth-submit" :disabled="authLoading" @click="handleAuthSubmit">
+                        {{ authLoading ? t('submitting') : (authMode === 'login' ? t('login') : t('register')) }}
+                    </button>
+                    <button class="auth-switch" @click="authMode = authMode === 'login' ? 'register' : 'login'">
+                        {{ authMode === 'login' ? t('goRegister') : t('goLogin') }}
+                    </button>
+                </div>
+            </div>
+
+            <div v-if="isAuthenticated && activeNav === 'settings'" class="settings-panel">
+                <div class="settings-header">
+                    <h2><i class="fas fa-cog"></i> {{ t('settings') }}</h2>
+                    <p>{{ t('settingsWip') }}</p>
+                </div>
+            </div>
+
+            <div v-if="isAuthenticated && showHistorySidebar" class="history-sidebar">
+                <div class="history-header">
+                    <h3>{{ t('history') }}</h3>
+                    <button @click="showHistorySidebar = false" class="close-btn"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="history-list">
+                    <div v-if="sessions.length === 0" class="empty-history"><p>{{ t('noHistory') }}</p></div>
+                    <div v-for="session in sessions" :key="session.session_id" class="history-item" :class="{active: session.session_id === sessionId}">
+                        <div class="session-body" @click="loadSession(session.session_id)">
+                            <div class="session-info">
+                                <div class="session-title">{{ session.session_id }}</div>
+                                <div class="session-meta">
+                                    <span>{{ session.message_count }} {{ t('messages') }}</span>
+                                    <span>{{ new Date(session.updated_at).toLocaleString() }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="history-delete-btn" :title="t('deleteSession')" @click.stop="deleteSession(session.session_id)"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div v-show="isAuthenticated && activeNav !== 'settings'" class="chat-area">
+                <header class="chat-header">
+                    <div class="header-info">
+                        <div class="status-dot"></div>
+                        <span>{{ t('online') }}</span>
+                    </div>
+                </header>
+
+                <div class="chat-container" ref="chatContainer">
+                    <div v-if="messages.length === 0" class="welcome-screen">
+                        <div class="big-avatar">🎓</div>
+                        <h3>{{ t('welcomeTitle') }}</h3>
+                        <p>{{ t('welcomeDesc') }}</p>
+                    </div>
+
+                    <div v-for="(msg, index) in messages" :key="index" :class="['message', msg.isUser ? 'user-message' : 'bot-message']">
+                        <div v-if="!msg.isUser && msg.isThinking && !msg.text" class="message-content thinking-content">
+                            <div v-if="!msg.toolSteps || !msg.toolSteps.length" class="thinking-header">
+                                <div class="thinking-dots"><span class="tdot"></span><span class="tdot"></span><span class="tdot"></span></div>
+                                <span class="thinking-text">{{ t('thinking') }}</span>
+                            </div>
+                            <div v-if="msg.toolSteps && msg.toolSteps.length" class="tool-steps">
+                                <div v-for="(step, si) in msg.toolSteps" :key="si" class="tool-step" :class="'tool-step-' + step.status">
+                                    <span class="tool-step-icon">{{ step.status === 'done' ? '✓' : '🔍' }}</span>
+                                    <span class="tool-step-label">{{ step.label }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="message-content" v-html="msg.isUser ? escapeHtml(msg.text) : parseMarkdown(msg.text)"></div>
+                    </div>
+                </div>
+
+                <div class="input-area-wrapper">
+                    <div class="input-area">
+                        <textarea v-model="userInput" @keydown="handleKeyDown" @compositionstart="handleCompositionStart" @compositionend="handleCompositionEnd" @input="autoResize" :placeholder="t('placeholder')" rows="1" ref="textarea"></textarea>
+                        <button v-if="isLoading" @click="handleStop" class="send-btn stop-btn" :title="t('stop')"><i class="fas fa-stop"></i></button>
+                        <button v-else @click="handleSend" class="send-btn" :title="t('send')"><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                    <div class="footer-text">{{ t('disclaimer') }}</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+canada:
+  study_permit:
+    documents:
+      - acceptance_letter
+      - proof_of_identity
+      - proof_of_funds
+      - language_test_results
+      - statement_of_purpose
+    proof_of_funds:
+      tuition: "first year"
+      living_cad: 20635
+    work_rights:
+      on_campus: "20 hours/week during semester"
+      off_campus: "20 hours/week with valid study permit"
+      coop: "requires co-op work permit"
+    pgwp:
+      eligible: true
+      duration: "up to 3 years depending on program length"
+  nationalities:
+    chinese:
+      processing_weeks: "4-8"
+      special_streams:
+        - name: "Student Direct Stream (SDS)"
+          benefit: "faster processing"
+          requirements:
+            - "GIC of 20635 CAD"
+            - "IELTS 6.0+ overall"
+    indian:
+      processing_weeks: "4-8"
+      special_streams:
+        - name: "Student Direct Stream (SDS)"
+          benefit: "faster processing"
+          requirements:
+            - "GIC of 20635 CAD"
+            - "IELTS 6.0+ overall"
+    korean:
+      processing_weeks: "4-8"
+      special_streams: []
+  default_processing_weeks: "8-16"

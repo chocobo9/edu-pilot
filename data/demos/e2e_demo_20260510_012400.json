@@ -1,0 +1,203 @@
+{
+  "session_1": [
+    {
+      "turn": 1,
+      "tool_calls": [],
+      "route": "intake"
+    },
+    {
+      "turn": 2,
+      "tool_calls": [
+        {
+          "name": "update_user_profile",
+          "arguments": {
+            "field": "gpa",
+            "value": "3.5"
+          },
+          "result": "Updated gpa = 3.5"
+        },
+        {
+          "name": "update_user_profile",
+          "arguments": {
+            "field": "language_scores",
+            "value": "{\"ielts\": 7.0}"
+          },
+          "result": "Updated language_scores = {'ielts': 7.0}"
+        },
+        {
+          "name": "update_user_profile",
+          "arguments": {
+            "field": "nationality",
+            "value": "Chinese"
+          },
+          "result": "Updated nationality = Chinese"
+        },
+        {
+          "name": "update_user_profile",
+          "arguments": {
+            "field": "target_country",
+            "value": "Canada"
+          },
+          "result": "Updated target_country = Canada"
+        },
+        {
+          "name": "update_user_profile",
+          "arguments": {
+            "field": "target_intake",
+            "value": "Fall 2027"
+          },
+          "result": "Updated target_intake = Fall 2027"
+        },
+        {
+          "name": "update_user_profile",
+          "arguments": {
+            "field": "target_programs",
+            "value": "[\"Big Data\"]"
+          },
+          "result": "Updated target_programs = ['Big Data']"
+        },
+        {
+          "name": "update_user_profile",
+          "arguments": {
+            "field": "university",
+            "value": "Simon Fraser University"
+          },
+          "result": "Updated university = Simon Fraser University"
+        },
+        {
+          "name": "query_programs",
+          "arguments": {
+            "country": "Canada",
+            "field": "Big Data"
+          },
+          "result": "[]"
+        },
+        {
+          "name": "query_programs",
+          "arguments": {
+            "country": "Canada",
+            "field": "data_science"
+          },
+          "result": "[{\"id\": \"sfu-bigdata-msc\", \"university\": \"Simon Fraser University\", \"program\": \"MSc in Big Data\", \"country\": \"Canada\", \"field\": \"data_science\", \"gpa_requirement\": 3.0, \"tuition_annual_cad\": 9200, \"dur"
+        },
+        {
+          "name": "check_visa_eligibility",
+          "arguments": {
+            "nationality": "Chinese",
+            "destination_country": "Canada",
+            "program_type": "master"
+          },
+          "result": "{\"destination\": \"Canada\", \"nationality\": \"Chinese\", \"program_type\": \"master\", \"visa_type\": \"study_permit\", \"documents_required\": [\"acceptance_letter\", \"proof_of_identity\", \"proof_of_funds\", \"language_"
+        },
+        {
+          "name": "calculate_timeline",
+          "arguments": {
+            "target_intake": "Fall 2027"
+          },
+          "result": "{\"target_intake\": \"Fall 2027\", \"intake_date\": \"2027-09-01\", \"generated_on\": \"2026-05-09\", \"milestones\": [{\"date\": \"2026-09-06\", \"description\": \"Start researching programs and requirements\", \"status\": "
+        }
+      ],
+      "route": "intake"
+    },
+    {
+      "turn": 3,
+      "tool_calls": [
+        {
+          "name": "check_visa_eligibility",
+          "arguments": {
+            "nationality": "Chinese",
+            "destination_country": "Canada",
+            "program_type": "master"
+          },
+          "result": "{\"destination\": \"Canada\", \"nationality\": \"Chinese\", \"program_type\": \"master\", \"visa_type\": \"study_permit\", \"documents_required\": [\"acceptance_letter\", \"proof_of_identity\", \"proof_of_funds\", \"language_"
+        }
+      ],
+      "route": "visa_advisory"
+    }
+  ],
+  "session_2": [
+    {
+      "turn": 1,
+      "tool_calls": [
+        {
+          "name": "get_user_profile",
+          "arguments": {},
+          "result": "{\"gpa\": 3.5, \"university\": \"Simon Fraser University\", \"language_scores\": {\"ielts\": 7.0}, \"target_country\": \"Canada\", \"target_programs\": [\"Big Data\"], \"target_intake\": \"Fall 2027\", \"nationality\": \"Chin"
+        }
+      ],
+      "route": "intake"
+    },
+    {
+      "turn": 2,
+      "tool_calls": [
+        {
+          "name": "update_user_profile",
+          "arguments": {
+            "field": "gpa",
+            "value": "3.7"
+          },
+          "result": "Updated gpa = 3.7"
+        }
+      ],
+      "route": "intake"
+    }
+  ],
+  "checks": [
+    {
+      "check": "Profile gpa=3.5 after turn 2",
+      "status": "OK"
+    },
+    {
+      "check": "Profile nationality=Chinese",
+      "status": "OK"
+    },
+    {
+      "check": "Route shifted to visa_advisory",
+      "status": "OK"
+    },
+    {
+      "check": "check_visa_eligibility called",
+      "status": "OK"
+    },
+    {
+      "check": "Profile in SQLite",
+      "status": "OK"
+    },
+    {
+      "check": "SQLite has gpa",
+      "status": "OK"
+    },
+    {
+      "check": "SQLite has nationality",
+      "status": "OK"
+    },
+    {
+      "check": "Summary in SQLite",
+      "status": "OK"
+    },
+    {
+      "check": "Checkpoint in SQLite",
+      "status": "OK"
+    },
+    {
+      "check": "Session 2 profile gpa=3.5",
+      "status": "OK"
+    },
+    {
+      "check": "Session 2 profile nationality=Chinese",
+      "status": "OK"
+    },
+    {
+      "check": "Agent NOT re-asking GPA",
+      "status": "OK"
+    },
+    {
+      "check": "update_user_profile with GPA 3.7",
+      "status": "OK"
+    },
+    {
+      "check": "SQLite gpa updated to 3.7",
+      "status": "OK"
+    }
+  ]
+}

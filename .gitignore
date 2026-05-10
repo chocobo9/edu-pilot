@@ -1,0 +1,30 @@
+.env
+#virtual environment
+edu-venv/
+#python cache
+__pycache__/
+*.pyc
+.pytest_cache/
+#data
+data/debug/
+data/*.db
+
+#temporary files
+help/*
+helper/*
+reference/*	
+tests/*
+
+#certificate
+*.cert
+*.key
+*.pem
+*.crt
+*.csr
+*.req
+*.ext
+*.cnf
+*.conf
+*.ini
+*.log
+
