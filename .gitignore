@@ -14,7 +14,7 @@ help/*
 helper/*
 reference/*	
 tests/*
-
+data/e2e_results/*
 #certificate
 *.cert
 *.key
@@ -30,3 +30,6 @@ tests/*
 
 #claude files
 .claude/*
+
+#scripts
+scripts/

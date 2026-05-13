@@ -40,6 +40,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = BASE_DIR / "frontend"
 
 _loop_states: dict[str, object] = {}
+_mcp_manager = None
+_mcp_tool_specs: list = []
 
 
 def _init_chat_tables() -> None:

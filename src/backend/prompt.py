@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from src.backend.state import BASE_SYSTEM_PROMPT, ROUTE_PROMPTS, UserProfile, _format_profile
+from src.backend.state import UserProfile, _format_profile, get_base_system_prompt, get_route_prompt
 
 
 class PromptAssembler:
@@ -25,7 +25,7 @@ def assemble_prompt(
     """Assemble a complete system prompt from profile, route, notes, and summaries."""
     asm = PromptAssembler()
 
-    asm.add_section("role", BASE_SYSTEM_PROMPT)
+    asm.add_section("role", get_base_system_prompt())
 
     profile_text = _format_profile(profile)
     asm.add_section("profile", f"\n## Known Student Information\n{profile_text}")
@@ -42,7 +42,10 @@ def assemble_prompt(
             note_lines.append(f"- [{cat}] {content}")
         asm.add_section("notes", f"\n## Advisor Notes\n" + "\n".join(note_lines))
 
-    route_prompt = ROUTE_PROMPTS.get(route, ROUTE_PROMPTS["general_qa"])
+    try:
+        route_prompt = get_route_prompt(route)
+    except FileNotFoundError:
+        route_prompt = get_route_prompt("general_qa")
     asm.add_section("route", f"\n## Current Mode\n{route_prompt}")
 
     return asm.build()

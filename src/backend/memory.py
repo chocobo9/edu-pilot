@@ -6,6 +6,17 @@ import sqlite3
 from dataclasses import dataclass
 from datetime import datetime, timezone
 
+from src.backend.skills.loader import load_skill
+
+
+def get_extraction_prompt() -> str:
+    return load_skill("extraction")
+
+
+def get_summarization_prompt(conversation: str) -> str:
+    template = load_skill("summarization")
+    return template.format(conversation=conversation)
+
 
 @dataclass
 class MemoryEvent:

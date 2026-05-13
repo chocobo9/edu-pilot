@@ -97,54 +97,15 @@ def determine_route(profile: UserProfile, intent: Intent) -> str:
     return intent.value
 
 
-BASE_SYSTEM_PROMPT = (
-    "You are EduPilot, a study-abroad advisory assistant. "
-    "Help students with program selection, visa guidance, and application planning. "
-    "Be concise and helpful. "
-    "IMPORTANT: Only present data returned by your tools. "
-    "Never invent, fabricate, or guess programs, schools, deadlines, or requirements. "
-    "If a tool returns no results, say so — do not fill in with made-up data."
-)
+def get_base_system_prompt() -> str:
+    from src.backend.skills.loader import load_skill
+    return load_skill("base-role")
 
-ROUTE_PROMPTS: dict[str, str] = {
-    "intake": (
-        "You are in INTAKE mode. Your goal is to collect the user's background information.\n"
-        "Ask about these fields naturally (don't list them all at once):\n"
-        "- GPA and current/previous university\n"
-        "- Language test scores (IELTS/TOEFL)\n"
-        "- Target country and programs of interest\n"
-        "- Budget constraints\n"
-        "- Work experience (if any)\n"
-        "- Nationality (needed for visa advice)\n\n"
-        "Ask 1-2 questions per turn. Be conversational, not interrogative.\n"
-        "When the user provides information, use the update_user_profile tool to save it.\n"
-        "When you have enough information (at least: GPA, language scores, target country, nationality),\n"
-        "transition naturally to giving recommendations."
-    ),
-    "school_match": (
-        "You are in SCHOOL MATCHING mode. The user's profile is available.\n"
-        "Use the query_programs tool to find matching programs.\n"
-        "Compare 2-3 programs and explain trade-offs (tuition, ranking, location, requirements).\n"
-        "If the user's profile is missing key fields, ask for them before searching."
-    ),
-    "visa_advisory": (
-        "You are in VISA ADVISORY mode.\n"
-        "Use the check_visa_eligibility tool with the user's nationality and destination.\n"
-        "Explain the process step-by-step. Mention processing times and required documents.\n"
-        "If applicable, mention special streams (e.g., Canada SDS for Chinese students)."
-    ),
-    "timeline": (
-        "You are in TIMELINE PLANNING mode.\n"
-        "Use the calculate_timeline tool to generate a timeline.\n"
-        "Present deadlines clearly. Flag any urgent items.\n"
-        "Account for: language test prep, application deadlines, visa processing, accommodation."
-    ),
-    "general_qa": (
-        "You are in GENERAL Q&A mode.\n"
-        "Answer the user's question based on your knowledge of study abroad processes.\n"
-        "If the question requires specific program or visa data, use the appropriate tool."
-    ),
-}
+
+def get_route_prompt(route: str) -> str:
+    from src.backend.skills.loader import load_skill
+    skill_name = f"route-{route.replace('_', '-')}"
+    return load_skill(skill_name)
 
 ROUTE_TOOLS: dict[str, list[str]] = {
     "intake": ["update_user_profile", "get_user_profile", "query_programs", "check_visa_eligibility", "calculate_timeline", "save_note"],
@@ -182,7 +143,7 @@ def build_system_prompt(
     summaries: list[str] | None = None,
 ) -> str:
     """Assemble dynamic system prompt from base + profile + route + memory context."""
-    sections = [BASE_SYSTEM_PROMPT]
+    sections = [get_base_system_prompt()]
 
     profile_section = _format_profile(profile)
     sections.append(f"\n## Known Student Information\n{profile_section}")
@@ -199,7 +160,10 @@ def build_system_prompt(
             note_lines.append(f"- [{cat}] {content}")
         sections.append(f"\n## Notes About This Student\n" + "\n".join(note_lines))
 
-    route_prompt = ROUTE_PROMPTS.get(route, ROUTE_PROMPTS["general_qa"])
+    try:
+        route_prompt = get_route_prompt(route)
+    except FileNotFoundError:
+        route_prompt = get_route_prompt("general_qa")
     sections.append(f"\n## Current Mode\n{route_prompt}")
 
     return "\n".join(sections)

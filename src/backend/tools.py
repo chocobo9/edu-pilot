@@ -53,6 +53,10 @@ class ToolRegistry:
             if spec_name in names
         ]
 
+    def mcp_tool_names(self) -> list[str]:
+        """Return names of MCP-registered tools (description starts with '[MCP:')."""
+        return [name for name, spec in self._tools.items() if spec.description.startswith("[MCP:")]
+
     def dispatch(self, name: str, args: dict) -> str:
         """Execute a registered tool by name. Never raises."""
         if name not in self._tools:

@@ -143,7 +143,9 @@ def agent_loop(
             )
             messages_with_system = [{"role": "system", "content": system_prompt}] + state.messages
 
-            route_tool_names = ROUTE_TOOLS.get(state.current_route, [])
+            route_tool_names = list(ROUTE_TOOLS.get(state.current_route, []))
+            if tools:
+                route_tool_names += tools.mcp_tool_names()
             tool_schemas = tools.schemas_for_names(route_tool_names) if tools else None
 
             response = llm.chat(messages_with_system, tool_schemas)
